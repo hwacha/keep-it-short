@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using SpeechRecognitionSystem;
 
 public class AudioRecorder : MonoBehaviour, IMicrophone {
-    public int MicrophoneIndex = 1;
+    public int MicrophoneIndex = 0;
     public int GetRecordPosition( ) {
         return Microphone.GetPosition( Microphone.devices [ MicrophoneIndex ] );
     }
