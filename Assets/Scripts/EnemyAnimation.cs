@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class EnemyAnimation : MonoBehaviour
 {
 
     public float leftBoundary = 0.005f;
     public float rightBoundary = -0.005f;
+
+    public NavMeshAgent navMeshAgent;
 
     private float zRotationVelocity = -0.2f;
     //private float yRotationVelocity = 0.5f;
@@ -20,13 +22,15 @@ public class EnemyAnimation : MonoBehaviour
     void Start()
     {
         radius = 0.5f * transform.lossyScale.x;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.LookAt(playerTransform);
-
+        transform.rotation *= Quaternion.Euler(1, 0, 1);
+        navMeshAgent.SetDestination(playerTransform.position);
 
         if (active)
         {
@@ -38,7 +42,7 @@ public class EnemyAnimation : MonoBehaviour
             }
             transform.Rotate(0, 0, zRotationVelocity);
 
-            transform.position += Vector3.Normalize(transform.forward) * 0.01f;
+            //transform.position += Vector3.Normalize(transform.forward) * 0.01f;
 
             // "walk" swivel
             // transform.parent.Rotate(0, yRotationVelocity, 0);
