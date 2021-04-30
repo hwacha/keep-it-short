@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     private int nextSentence = -1;
     private bool audioStarted = false;
     #endregion
+
     private Sentence[] sentences = new Sentence[]{
         new Sentence() {
             // 0
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour
             subtitles = "Greg and I, we go back to college. We were roommates together freshman year.",
             o1Text = "[Q] Funny putdown, haha",
             o1NextState = -1,
+            incitement = "Natalie"
         },
         new Sentence() {
             // 3
@@ -54,6 +56,7 @@ public class GameController : MonoBehaviour
             subtitles = "you know the thing",
             o1Text = "[Q] another test hahhahaha",
             o1NextState = -1,
+            incitement = "Natalie"
         },
     };
     // Start is called before the first frame update
@@ -78,25 +81,23 @@ public class GameController : MonoBehaviour
     public class Sentence
     {
         public string audiofile { get; set; }
-
         public string subtitles { get; set; }
         public string o1Text { get; set; }
         public int o1NextState { get; set; }
         public string o2Text { get; set; }
         public int o2NextState { get; set; }
+        public string incitement { get; set; }
 
     }
     void Start()
     {
         currentSentence = 0;
         nextSentence = 2;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(currentSentence);
         var sentence = sentences[currentSentence];
         if (canvas.active && !audioStarted)
         {
@@ -140,6 +141,11 @@ public class GameController : MonoBehaviour
             optionsText.GetComponent<Text>().text = sentence.o1Text + "\n" + sentence.o2Text;
 
             options.active = true;
+
+            if (sentence.incitement != null) {
+                var enemy = GameObject.Find("Guests/" + sentence.incitement);
+                enemy.GetComponent<EnemyAnimation>().Incite();
+            }
         }
 
         // if there's no prompt, then we need to increment the

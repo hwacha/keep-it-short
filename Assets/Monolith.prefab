@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1644507361542825218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7807901584190042510}
+  m_Layer: 0
+  m_Name: wobbler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7807901584190042510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644507361542825218}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2007045823120955684}
+  - {fileID: 2007045823078039838}
+  m_Father: {fileID: 2007045823486737272}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2007045823078039826
 GameObject:
   m_ObjectHideFlags: 0
@@ -27,10 +59,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007045823078039826}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.09494579, y: -0.010843515, z: -0.06973195}
-  m_LocalScale: {x: 0.6688326, y: 1.8016945, z: 0.06159567}
+  m_LocalPosition: {x: -0.09494564, y: -0.010843493, z: -0.069732085}
+  m_LocalScale: {x: 0.66883266, y: 1.8016945, z: 0.06159568}
   m_Children: []
-  m_Father: {fileID: 2007045823486737272}
+  m_Father: {fileID: 7807901584190042510}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2007045823078039839
@@ -90,7 +122,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007045823078039826}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -121,11 +153,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007045823120955704}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.09554577, y: -0.01, z: -0.03}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.095545426, y: -0.009999968, z: -0.03000024}
   m_LocalScale: {x: 0.0563, y: 0, z: 0.1689232}
   m_Children: []
-  m_Father: {fileID: 2007045823486737272}
+  m_Father: {fileID: 7807901584190042510}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &2007045823120955685
@@ -202,7 +234,7 @@ GameObject:
   - component: {fileID: 2007045823486737272}
   - component: {fileID: 2007045823486737255}
   m_Layer: 0
-  m_Name: Monolith 1
+  m_Name: Monolith
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,8 +251,7 @@ Transform:
   m_LocalPosition: {x: 2.5821538, y: -0.048, z: -0.022614479}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2007045823120955684}
-  - {fileID: 2007045823078039838}
+  - {fileID: 7807901584190042510}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 231.541, z: 0}
@@ -238,5 +269,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftBoundary: 0.05
   rightBoundary: -0.05
+  navMeshAgent: {fileID: 0}
   playerTransform: {fileID: 0}
-  active: 0
+  wobbler: {fileID: 7807901584190042510}
+  menuScreen: {fileID: 0}
+  incited: 0

@@ -5,48 +5,70 @@ using UnityEngine.AI;
 public class EnemyAnimation : MonoBehaviour
 {
 
-    public float leftBoundary = 0.005f;
-    public float rightBoundary = -0.005f;
+    public float leftBoundary = 0.05f;
+    public float rightBoundary = -0.05f;
 
     public NavMeshAgent navMeshAgent;
 
     private float zRotationVelocity = -0.2f;
-    //private float yRotationVelocity = 0.5f;
 
     private float radius;
 
     public Transform playerTransform;
 
-    public bool active = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        radius = 0.5f * transform.lossyScale.x;
+    public Transform wobbler;
 
+    public GameObject menuScreen;
+
+    public bool incited = false;
+    private float epsilon = 0.5f;
+
+    // Start is called before the first frame update
+    void Start() {
+        radius = 0.5f * transform.lossyScale.x;
+        menuScreen = GameObject.Find("MenuScreen");
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        transform.LookAt(playerTransform);
-        transform.rotation *= Quaternion.Euler(1, 0, 1);
-        navMeshAgent.SetDestination(playerTransform.position);
+    void Update() {
+        // TODO
+        // // "wobble"
+        // if (wobbler.rotation.z <= rightBoundary ||
+        //     wobbler.rotation.z >= leftBoundary) {
+        //     zRotationVelocity *= -1;
+        // }
+        // wobbler.Rotate(0, 0, zRotationVelocity);
 
-        if (active)
-        {
-            // "wobble"
-            if (transform.rotation.z <= rightBoundary ||
-                transform.rotation.z >= leftBoundary)
-            {
-                zRotationVelocity *= -1;
+        if (incited) {
+            navMeshAgent.SetDestination(playerTransform.position);
+
+            // TODO do distance directly
+            if (0 < navMeshAgent.remainingDistance &&
+                navMeshAgent.remainingDistance < epsilon) {
+                menuScreen.transform.GetChild(0).gameObject.active = true;
             }
-            transform.Rotate(0, 0, zRotationVelocity);
-
-            //transform.position += Vector3.Normalize(transform.forward) * 0.01f;
-
-            // "walk" swivel
-            // transform.parent.Rotate(0, yRotationVelocity, 0);
+        } else {
+            // maybe wobbler?
+            transform.LookAt(playerTransform);
         }
+    }
+    
+    // returns false if already incited
+    public bool Incite() {
+        if (!incited) {
+            var cube = wobbler.GetChild(1);
+            var mat = cube.GetComponent<Renderer>().material;
+            mat.color = Color.red;
 
+            incited = true;
+            return true;
+        }
+        return false;
+    }
+
+    public void Pacify() {
+        // if we want a place for the enemy to go when
+        // it's "pacified", we'll want to set the destination
+        // to a neutral location.
     }
 }
