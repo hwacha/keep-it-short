@@ -13,6 +13,8 @@ public class MicrophoneToggle : MonoBehaviour
     public Vector3 upPosition = new Vector3(0.15f, -0.18f, 0.63f);
     public Vector3 upRotation = new Vector3(-65, 0, 15);
 
+    public PlayerMovement pm;
+
     void Start() {
         isMicrophoneUp = false;
     }
@@ -27,12 +29,16 @@ public class MicrophoneToggle : MonoBehaviour
                 transform.localPosition = new Vector3(upPosition.x, upPosition.y, upPosition.z);
                 transform.localRotation = Quaternion.Euler(upRotation);
 
+                pm.speed = pm.micUpSpeed;
+
                 controller.MicUp();
 
             } else {
                 // we're switching to a down position
                 transform.localPosition = new Vector3(downPosition.x, downPosition.y, downPosition.z);
                 transform.localRotation = Quaternion.Euler(downRotation);
+
+                pm.speed = pm.micDownSpeed;
 
                 controller.MicDown();
             }

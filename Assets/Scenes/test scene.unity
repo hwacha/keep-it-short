@@ -485,6 +485,7 @@ MonoBehaviour:
   downRotation: {x: 20, y: 0, z: 15}
   upPosition: {x: 0.15, y: -0.18, z: 0.63}
   upRotation: {x: -65, y: 0, z: 15}
+  pm: {fileID: 2022217187}
 --- !u!1 &277407258
 GameObject:
   m_ObjectHideFlags: 0
@@ -3866,6 +3867,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 2022217192}
+  micUpSpeed: 1
+  micDownSpeed: 12
   speed: 4
 --- !u!136 &2022217188
 CapsuleCollider:
