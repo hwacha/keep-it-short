@@ -5,6 +5,7 @@ using UnityEngine;
 public class MicrophoneToggle : MonoBehaviour
 {
     bool isMicrophoneUp;
+    public GameController controller;
 
     public Vector3 downPosition = new Vector3(0.25f, -0.45f, 0.58f);
     public Vector3 downRotation = new Vector3(20, 0, 15);
@@ -25,10 +26,15 @@ public class MicrophoneToggle : MonoBehaviour
             if (isMicrophoneUp) {
                 transform.localPosition = new Vector3(upPosition.x, upPosition.y, upPosition.z);
                 transform.localRotation = Quaternion.Euler(upRotation);
+
+                controller.MicUp();
+
             } else {
                 // we're switching to a down position
                 transform.localPosition = new Vector3(downPosition.x, downPosition.y, downPosition.z);
                 transform.localRotation = Quaternion.Euler(downRotation);
+
+                controller.MicDown();
             }
         }
     }

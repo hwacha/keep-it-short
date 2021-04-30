@@ -226,6 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 198203095}
   - component: {fileID: 198203094}
+  - component: {fileID: 198203096}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -245,6 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bcd714a86028496aa645ea61e6bf089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1681974842}
+  subtitle: {fileID: 277407258}
+  options: {fileID: 285987814}
+  optionsText: {fileID: 763602557}
+  playerIntroText: "Let\u2019s give it up for the bride and groom! Natalie and Greg!"
+  playerIntroAudio: {fileID: 198203096}
 --- !u!4 &198203095
 Transform:
   m_ObjectHideFlags: 0
@@ -259,6 +266,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &198203096
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198203093}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: decefc51141aa4511976807d66f60970, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.601
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &245138942
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff25c050854eb4469b019c5f69b490a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 198203094}
   downPosition: {x: 0.25, y: -0.45, z: 0.58}
   downRotation: {x: 20, y: 0, z: 15}
   upPosition: {x: 0.15, y: -0.18, z: 0.63}
@@ -328,12 +432,12 @@ GameObject:
   - component: {fileID: 277407261}
   - component: {fileID: 277407260}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: subtitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &277407259
 RectTransform:
   m_ObjectHideFlags: 0
@@ -386,7 +490,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Greg and I, we go back to college. We were '
+  m_Text: "Let\u2019s give it up for the bride and groom! Natalie and Greg!"
 --- !u!222 &277407261
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -407,7 +511,7 @@ GameObject:
   - component: {fileID: 285987817}
   - component: {fileID: 285987816}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,7 +664,7 @@ GameObject:
   - component: {fileID: 763602560}
   - component: {fileID: 763602559}
   m_Layer: 5
-  m_Name: Text
+  m_Name: optionsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,9 +722,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[Q] Anon
-
-    [E] macs > Vim :-)'
+  m_Text: '[Q] Get ''em goin'''
 --- !u!222 &763602560
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1176,7 +1278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1681974843
 MonoBehaviour:
   m_ObjectHideFlags: 0
