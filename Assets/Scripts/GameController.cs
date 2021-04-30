@@ -13,23 +13,49 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region speech
-    public string playerIntroText;
-    public AudioSource playerIntroAudio;
+    public string playerText;
+    public AudioSource playerAudio;
 
-    public string playerIntroText2;
-    public AudioSource playerIntroAudio2;
-
-    public string gregText1;
-    public AudioSource gregAudio1;
-
-    public string natalieText1;
-    public AudioSource natalieAudio1;
+    private int currentSentence = 0;
+    private int nextSentence = -1;
+    private bool audioStarted = false;
     #endregion
-
-    private int currentTextClip = 0;
-    private int nextTextClip = 1;
-    private bool audioHasBeenPlaying = false;
-
+    private Sentence[] sentences = new Sentence[]{
+        new Sentence() {
+            // 0
+            o1NextState = 1,
+        },
+        new Sentence() {
+            // 0
+            audiofile = "intro",
+            subtitles = "Let’s give it up for the bride and groom! Natalie and Greg!",
+            o1Text = "[Q] Take it away",
+            o1NextState = 2,
+        },
+        new Sentence() {
+            // 1
+            audiofile = "intro2",
+            subtitles = "Natalie and Greg! Who can believe it!",
+            o1Text = "[Q] Share memories of Greg",
+            o1NextState = 3,
+            o2Text = "[E] Share memories of Natalie",
+            o2NextState = 4,
+        },
+        new Sentence() {
+            // 2
+            audiofile = "intro",
+            subtitles = "Greg and I, we go back to college. We were roommates together freshman year.",
+            o1Text = "[Q] Funny putdown, haha",
+            o1NextState = -1,
+        },
+        new Sentence() {
+            // 3
+            audiofile = "KERNKRAFT",
+            subtitles = "you know the thing",
+            o1Text = "[Q] another test hahhahaha",
+            o1NextState = -1,
+        },
+    };
     // Start is called before the first frame update
     /*
         - references to the UI elements
@@ -49,148 +75,94 @@ public class GameController : MonoBehaviour
 
 
     */
+    public class Sentence
+    {
+        public string audiofile { get; set; }
+
+        public string subtitles { get; set; }
+        public string o1Text { get; set; }
+        public int o1NextState { get; set; }
+        public string o2Text { get; set; }
+        public int o2NextState { get; set; }
+
+    }
     void Start()
     {
+        currentSentence = 0;
+        nextSentence = 2;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // the first currentTextClip of the game.
-        // canvas has options: [Q] get it started
-        if (currentTextClip == 0) {
-            if (canvas.active && Input.GetKeyDown(KeyCode.Q) && !audioHasBeenPlaying) {
+        Debug.Log(currentSentence);
+        var sentence = sentences[currentSentence];
+        if (canvas.active && !audioStarted)
+        {
+            var hasQ = (Input.GetKeyDown(KeyCode.Q) && sentence.o1NextState != -1);
+            var hasE = (Input.GetKeyDown(KeyCode.E) && sentence.o2NextState != -1);
+
+            if (hasQ || hasE)
+            {
+
+                nextSentence = sentence.o1NextState;
+                if (!hasQ)
+                {
+                    nextSentence = sentence.o2NextState;
+                }
                 options.active = false;
 
-                subtitle.GetComponent<Text>().text = playerIntroText;
+                subtitle.GetComponent<Text>().text = sentences[nextSentence].subtitles;
                 subtitle.active = true;
 
-                playerIntroAudio.Play();
-                audioHasBeenPlaying = true;
-
-                // we're playing this audio... still in currentTextClip 0...
-
-                // we only get here after the audio's done!
+                AudioClip audioClip = Resources.Load(sentences[nextSentence].audiofile) as AudioClip;
+                playerAudio.clip = audioClip;
+                playerAudio.Play();
+                audioStarted = true;
             }
 
-            // as we go to the next state, we must set the text
-            // of the options menu to the next state.
-            if (!playerIntroAudio.isPlaying && audioHasBeenPlaying) {
-                audioHasBeenPlaying = false;
+            // we're playing this audio... still in currentTextClip 0...
 
-                subtitle.active = false;
-
-                optionsText.GetComponent<Text>().text = "[Q] Take it away";
-                options.active = true;
-                nextTextClip = 2;
-                currentTextClip = 1;
-            }
-
-            // if there's no prompt, then we need to increment the
-            // currentTextClip and move to the next subtitle/audio clip
-            // once the full audio clip has played through.
+            // we only get here after the audio's done!
         }
 
-        if (currentTextClip == 1) {
-            if (canvas.active && Input.GetKeyDown(KeyCode.Q) && !audioHasBeenPlaying) {
-                options.active = false;
+        // as we go to the next state, we must set the text
+        // of the options menu to the next state.
+        if (!playerAudio.isPlaying && audioStarted)
+        {
+            audioStarted = false;
 
-                subtitle.GetComponent<Text>().text = playerIntroText2;
-                subtitle.active = true;
+            subtitle.active = false;
+            currentSentence = nextSentence;
+            sentence = sentences[nextSentence];
 
-                playerIntroAudio2.Play();
-                audioHasBeenPlaying = true;
-            }
+            optionsText.GetComponent<Text>().text = sentence.o1Text + "\n" + sentence.o2Text;
 
-            if (!playerIntroAudio2.isPlaying && audioHasBeenPlaying) {
-                audioHasBeenPlaying = false;
-
-                subtitle.active = false;
-
-                optionsText.GetComponent<Text>().text =
-                    "[Q] Share memories of Greg\n[E] Share memories of Natalie";
-                options.active = true;
-                currentTextClip = nextTextClip;
-            }
+            options.active = true;
         }
 
-        if (currentTextClip == 2) {
-            if (canvas.active && !audioHasBeenPlaying) {
-                if (Input.GetKeyDown(KeyCode.Q)) {
-                    options.active = false;
-
-                    subtitle.GetComponent<Text>().text = gregText1;
-                    subtitle.active = true;
-
-                    gregAudio1.Play();
-                    audioHasBeenPlaying = true;
-
-                    nextTextClip = 3;
-                }
-
-                if (Input.GetKeyDown(KeyCode.E)) {
-                    options.active = false;
-
-                    subtitle.GetComponent<Text>().text = natalieText1;
-                    subtitle.active = true;
-
-                    natalieAudio1.Play();
-                    audioHasBeenPlaying = true;
-
-                    nextTextClip = 4;
-                }
-
-                if (nextTextClip == 3 && !gregAudio1.isPlaying && audioHasBeenPlaying) {
-                    audioHasBeenPlaying = false;
-
-                    subtitle.active = false;
-
-                    optionsText.GetComponent<Text>().text = "[Q] Funny putdown, haha";
-                    options.active = true;
-
-                    currentTextClip = nextTextClip;
-                }
-
-                if (nextTextClip == 4 && !natalieAudio1.isPlaying && audioHasBeenPlaying) {
-                    audioHasBeenPlaying = false;
-
-                    subtitle.active = false;
-
-                    optionsText.GetComponent<Text>().text = "[Q] Uh oh! Dating story!";
-                    options.active = true;
-
-                    currentTextClip = nextTextClip;
-                }
-            }
-        }
+        // if there's no prompt, then we need to increment the
+        // currentTextClip and move to the next subtitle/audio clip
+        // once the full audio clip has played through.
     }
 
-    public void MicUp() {
+    public void MicUp()
+    {
         canvas.active = true;
     }
 
-    public void MicDown() {
+    public void MicDown()
+    {
         // we need to gracefully interrupt the audio.
-        if (currentTextClip == 0) {
-            playerIntroAudio.Stop();
-        }
-        if (currentTextClip == 1) {
-            playerIntroAudio2.Stop();
-        }
-        if (nextTextClip == 3) {
-            gregAudio1.Stop();
-        }
-        if (nextTextClip == 4) {
-            natalieAudio1.Stop();
-        }
-        audioHasBeenPlaying = false;
+        playerAudio.Stop();
+        audioStarted = false;
 
         // we go back to the options menu.
         subtitle.active = false;
         options.active = true;
 
         // we collapse the canvas.
-        canvas.active = false;        
+        canvas.active = false;
     }
 }
