@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-
     public float speed;
     // Start is called before the first frame update
     void Start()
@@ -20,5 +19,6 @@ public class PlayerMovement : MonoBehaviour
         float dz = Input.GetAxisRaw("Vertical");
         Vector3 move = Vector3.Normalize(transform.right * dx + transform.forward * dz) * speed;
         controller.Move(move * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, 1.05f, transform.position.z);
     }
 }

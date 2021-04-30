@@ -14,7 +14,7 @@ public class EnemyAnimation : MonoBehaviour
 
     private float radius;
 
-    public Transform playerTransform;
+    private Transform playerTransform;
 
     public Transform wobbler;
 
@@ -24,13 +24,16 @@ public class EnemyAnimation : MonoBehaviour
     private float epsilon = 0.5f;
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         radius = 0.5f * transform.lossyScale.x;
         menuScreen = GameObject.Find("MenuScreen");
+        playerTransform = GameObject.Find("Player").transform;
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         // TODO
         // // "wobble"
         // if (wobbler.rotation.z <= rightBoundary ||
@@ -39,23 +42,29 @@ public class EnemyAnimation : MonoBehaviour
         // }
         // wobbler.Rotate(0, 0, zRotationVelocity);
 
-        if (incited) {
+        if (incited)
+        {
             navMeshAgent.SetDestination(playerTransform.position);
 
             // TODO do distance directly
             if (0 < navMeshAgent.remainingDistance &&
-                navMeshAgent.remainingDistance < epsilon) {
+                navMeshAgent.remainingDistance < epsilon)
+            {
                 menuScreen.transform.GetChild(0).gameObject.active = true;
             }
-        } else {
+        }
+        else
+        {
             // maybe wobbler?
             transform.LookAt(playerTransform);
         }
     }
-    
+
     // returns false if already incited
-    public bool Incite() {
-        if (!incited) {
+    public bool Incite()
+    {
+        if (!incited)
+        {
             var cube = wobbler.GetChild(1);
             var mat = cube.GetComponent<Renderer>().material;
             mat.color = Color.red;
@@ -66,7 +75,8 @@ public class EnemyAnimation : MonoBehaviour
         return false;
     }
 
-    public void Pacify() {
+    public void Pacify()
+    {
         // if we want a place for the enemy to go when
         // it's "pacified", we'll want to set the destination
         // to a neutral location.

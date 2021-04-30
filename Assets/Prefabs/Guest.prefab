@@ -146,7 +146,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   wobbler: {fileID: 649258127106235452}
   menuScreen: {fileID: 0}
-  incited: 1
+  incited: 0
 --- !u!195 &711365981254728875
 NavMeshAgent:
   m_ObjectHideFlags: 0
