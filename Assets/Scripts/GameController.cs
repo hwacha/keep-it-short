@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class GameController : MonoBehaviour
     private int nextSentence = -1;
     private bool audioStarted = false;
     #endregion
+
+    public int gameState = 0;
 
     private Sentence[] sentences = new Sentence[]{
         new Sentence() {
@@ -98,56 +101,73 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var sentence = sentences[currentSentence];
-        if (canvas.active && !audioStarted)
+        if (gameState == 0)
         {
-            var hasQ = (Input.GetKeyDown(KeyCode.Q) && sentence.o1NextState != -1);
-            var hasE = (Input.GetKeyDown(KeyCode.E) && sentence.o2NextState != -1);
-
-            if (hasQ || hasE)
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-
-                nextSentence = sentence.o1NextState;
-                if (!hasQ)
-                {
-                    nextSentence = sentence.o2NextState;
-                }
-                options.active = false;
-
-                subtitle.GetComponent<Text>().text = sentences[nextSentence].subtitles;
-                subtitle.active = true;
-
-                AudioClip audioClip = Resources.Load(sentences[nextSentence].audiofile) as AudioClip;
-                playerAudio.clip = audioClip;
-                playerAudio.Play();
-                audioStarted = true;
-            }
-
-            // we're playing this audio... still in currentTextClip 0...
-
-            // we only get here after the audio's done!
+                gameState = 1;
+            };
         }
-
-        // as we go to the next state, we must set the text
-        // of the options menu to the next state.
-        if (!playerAudio.isPlaying && audioStarted)
+        if (gameState == 1)
         {
-            audioStarted = false;
+            var sentence = sentences[currentSentence];
+            if (canvas.active && !audioStarted)
+            {
+                var hasQ = (Input.GetKeyDown(KeyCode.Q) && sentence.o1NextState != -1);
+                var hasE = (Input.GetKeyDown(KeyCode.E) && sentence.o2NextState != -1);
 
-            subtitle.active = false;
-            currentSentence = nextSentence;
-            sentence = sentences[nextSentence];
+                if (hasQ || hasE)
+                {
 
-            optionsText.GetComponent<Text>().text = sentence.o1Text + "\n" + sentence.o2Text;
+                    nextSentence = sentence.o1NextState;
+                    if (!hasQ)
+                    {
+                        nextSentence = sentence.o2NextState;
+                    }
+                    options.active = false;
 
-            options.active = true;
+                    subtitle.GetComponent<Text>().text = sentences[nextSentence].subtitles;
+                    subtitle.active = true;
 
-            if (sentence.incitement != null) {
-                var enemy = GameObject.Find("Guests/" + sentence.incitement);
-                enemy.GetComponent<EnemyAnimation>().Incite();
+                    AudioClip audioClip = Resources.Load(sentences[nextSentence].audiofile) as AudioClip;
+                    playerAudio.clip = audioClip;
+                    playerAudio.Play();
+                    audioStarted = true;
+                }
+
+                // we're playing this audio... still in currentTextClip 0...
+
+                // we only get here after the audio's done!
+            }
+
+            // as we go to the next state, we must set the text
+            // of the options menu to the next state.
+            if (!playerAudio.isPlaying && audioStarted)
+            {
+                audioStarted = false;
+
+                subtitle.active = false;
+                currentSentence = nextSentence;
+                sentence = sentences[nextSentence];
+
+                optionsText.GetComponent<Text>().text = sentence.o1Text + "\n" + sentence.o2Text;
+
+                options.active = true;
+
+                if (sentence.incitement != null)
+                {
+                    var enemy = GameObject.Find("Guests/" + sentence.incitement);
+                    enemy.GetComponent<EnemyAnimation>().Incite();
+                }
             }
         }
-
+        if (gameState == 2 || gameState == 3)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                SceneManager.LoadScene("test scene");
+            };
+        }
         // if there's no prompt, then we need to increment the
         // currentTextClip and move to the next subtitle/audio clip
         // once the full audio clip has played through.

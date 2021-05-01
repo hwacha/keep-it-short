@@ -3,7 +3,7 @@
 Properties {
     _Color ("_Color", Color) = (1,1,1,1)
 }
- 
+
 SubShader {
     Color [_Color]
     Pass {
@@ -40,7 +40,7 @@ SubShader {
                 if (_Color.b > 0) {
                     return _Color;
                 } else {
-                    return _Color * ((sin(_Time.y * 10) * 0.5) + 1);    
+                    return _Color * ((sin(_Time.y * 5) * 0.5) + 1);
                 }
             }
             ENDCG

@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class EnemyAnimation : MonoBehaviour
 {
 
+    public int gameState = 0;
     public float leftBoundary = 0.05f;
     public float rightBoundary = -0.05f;
 
@@ -18,8 +19,6 @@ public class EnemyAnimation : MonoBehaviour
 
     public Transform wobbler;
 
-    public GameObject menuScreen;
-
     public bool incited = false;
     private float epsilon = 0.5f;
 
@@ -27,12 +26,7 @@ public class EnemyAnimation : MonoBehaviour
     void Start()
     {
         radius = 0.5f * transform.lossyScale.x;
-        menuScreen = GameObject.Find("MenuScreen");
         playerTransform = GameObject.Find("Player").transform;
-
-        if (gameObject.name.Equals("Greg")) {
-            Incite();
-        }
     }
 
     // Update is called once per frame
@@ -54,7 +48,8 @@ public class EnemyAnimation : MonoBehaviour
             if (0 < navMeshAgent.remainingDistance &&
                 navMeshAgent.remainingDistance < epsilon)
             {
-                menuScreen.transform.GetChild(0).gameObject.active = true;
+                var game = GameObject.Find("GameController");
+                game.GetComponent<GameController>().gameState = 2;
             }
         }
         else
