@@ -29,6 +29,10 @@ public class EnemyAnimation : MonoBehaviour
         radius = 0.5f * transform.lossyScale.x;
         menuScreen = GameObject.Find("MenuScreen");
         playerTransform = GameObject.Find("Player").transform;
+
+        if (gameObject.name.Equals("Greg")) {
+            Incite();
+        }
     }
 
     // Update is called once per frame
