@@ -32,8 +32,7 @@ public class EnemyAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO
-        // // "wobble"
+
         // if (wobbler.rotation.z <= rightBoundary ||
         //     wobbler.rotation.z >= leftBoundary) {
         //     zRotationVelocity *= -1;
@@ -45,8 +44,9 @@ public class EnemyAnimation : MonoBehaviour
             navMeshAgent.SetDestination(playerTransform.position);
 
             // TODO do distance directly
-            if (0 < navMeshAgent.remainingDistance &&
-                navMeshAgent.remainingDistance < epsilon)
+            var remainingDistance = Vector3.Distance(playerTransform.position, transform.position);
+            if (0 < remainingDistance &&
+                remainingDistance < epsilon)
             {
                 var game = GameObject.Find("GameController");
                 game.GetComponent<GameController>().gameState = 2;
@@ -74,6 +74,17 @@ public class EnemyAnimation : MonoBehaviour
         return false;
     }
 
+    public bool TalkAbout()
+    {
+        if (!incited)
+        {
+            var cube = wobbler.GetChild(1);
+            var mat = cube.GetComponent<Renderer>().material;
+            mat.color = Color.blue;
+            return true;
+        }
+        return false;
+    }
     public void Pacify()
     {
         // if we want a place for the enemy to go when
