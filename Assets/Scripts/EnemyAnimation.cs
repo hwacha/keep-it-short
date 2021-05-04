@@ -6,12 +6,13 @@ public class EnemyAnimation : MonoBehaviour
 {
 
     public int gameState = 0;
-    public float leftBoundary = 0.05f;
-    public float rightBoundary = -0.05f;
+    public float leftBoundary = 5;
+    public float rightBoundary = -5;
 
     public NavMeshAgent navMeshAgent;
 
-    private float zRotationVelocity = -0.2f;
+    private float zRotationDefaultSpeed = 5f;
+    private float zRotationSpeed;
 
     private float radius;
 
@@ -27,6 +28,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         radius = 0.5f * transform.lossyScale.x;
         playerTransform = GameObject.Find("Player").transform;
+        zRotationSpeed = zRotationDefaultSpeed * Random.Range(0.8f, 1.2f);
     }
 
     // Update is called once per frame
@@ -38,6 +40,12 @@ public class EnemyAnimation : MonoBehaviour
         //     zRotationVelocity *= -1;
         // }
         // wobbler.Rotate(0, 0, zRotationVelocity);
+        
+        transform.rotation = transform.rotation *
+            Quaternion.Lerp(
+                Quaternion.AngleAxis(leftBoundary, Vector3.forward),
+                Quaternion.AngleAxis(rightBoundary, Vector3.forward),
+                Mathf.PingPong(Time.time * zRotationSpeed, 1));
 
         if (incited)
         {

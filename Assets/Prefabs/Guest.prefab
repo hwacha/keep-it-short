@@ -140,12 +140,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6484115e06e41e6ab24bb0b4087f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftBoundary: 0.05
-  rightBoundary: -0.05
+  gameState: 0
+  leftBoundary: 5
+  rightBoundary: -5
   navMeshAgent: {fileID: 711365981254728875}
-  playerTransform: {fileID: 0}
   wobbler: {fileID: 649258127106235452}
-  menuScreen: {fileID: 0}
   incited: 0
 --- !u!195 &711365981254728875
 NavMeshAgent:
