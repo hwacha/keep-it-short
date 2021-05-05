@@ -17,13 +17,20 @@ public class GameController : MonoBehaviour
     public string playerText;
     public AudioSource playerAudio;
 
-    private int currentSentence = 0;
+    public float visual_cutoff_start = 5f;
+    public float visual_cutoff_end = 10f;
+    public float audio_cutoff_start = 10f;
+    public float audio_cutoff_end = 12f;
+    public int currentSentence = 0;
     private int nextSentence = -1;
     private bool audioStarted = false;
     #endregion
 
     public int gameState = 0;
-
+    private HashSet<string> currTalkabout = new HashSet<string>();
+    private HashSet<string> currIncitement = new HashSet<string>();
+    private Dictionary<string, Vector3> enemyPositions = new Dictionary<string, Vector3>();
+    private Vector3 playerStart;
     private Sentence[] sentences = new Sentence[]{
         new Sentence() {
             // 0
@@ -34,26 +41,29 @@ public class GameController : MonoBehaviour
             subtitles = "Let’s give it up for the bride and groom! Natalie and Greg! Woooo!",
             o1Text = "[Q] Lightly roast :)",
             o1NextState = 2,
+            talkabout = new string[] {"Greg", "Natalie"},
         },
         new Sentence() {
             audiofile = "2",
             subtitles = "I mean, who can believe it? I never thought Greg could talk to a girl, let alone get one to marry him!",
             o1Text = "[Q] Keep it going.",
             o1NextState = 3,
-            incitement = "Greg",
+            talkabout = new string[] {"Greg"},
+            incitement = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "3",
             subtitles = "Nobody thought it would last! I remember talking to our buddy Ed when they started dating, and he said he didn't think it would last a month!",
             o1Text = "[Q] Elaborate.",
             o1NextState = 4,
-            talkabout = "Ed",
+            talkabout = new string[] {"Ed"},
         },
         new Sentence() {
             audiofile = "4",
             subtitles = "Not even a month! Can you believe it? Come on, Lowball Ed.",
             o1Text = "[Q] Riff.",
             o1NextState = 5,
+            talkabout = new string[] {"Ed"},
         },
         new Sentence() {
             audiofile = "5",
@@ -122,38 +132,42 @@ public class GameController : MonoBehaviour
             subtitles = "Anyway, despite some rough patches, me and Greg have become pretty close friends.",
             o1Text = "[Q] Time for Natalie.",
             o1NextState = 16,
-            talkabout = "Natalie",
         },
         new Sentence() {
             audiofile = "16",
             subtitles = "Now, Natalie. I actually met her before Greg did, if you can believe it.",
             o1Text = "[Q] Describe.",
-            o1NextState = 17
+            o1NextState = 17,
+            talkabout = new string[] {"Natalie"},
         },
         new Sentence() {
             audiofile = "17",
             subtitles = "Man, back then, Nat was beautiful. I mean, she's pretty enough now, but God, back then, she was a smokeshow.",
             o1Text = "[Q] Reminisce.",
-            o1NextState = 18
+            o1NextState = 18,
+            talkabout = new string[] {"Natalie"},
         },
         new Sentence() {
             audiofile = "18",
             subtitles = "I sat behind her in organic chemistry, and I'd spend the whole time just staring at her, thinking all sorts of thoughts, if you know what I mean.",
             o1Text = "[Q] Move on.",
-            o1NextState = 19
+            o1NextState = 19,
+            talkabout = new string[] {"Natalie"},
         },
         new Sentence() {
             audiofile = "19",
             subtitles = "I mean, I don't want to dwell on it...",
             o1Text = "[Q] Maybe dwell on it a little, actually.",
-            o1NextState = 20
+            o1NextState = 20,
+            talkabout = new string[] {"Natalie"},
         },
         new Sentence() {
             audiofile = "20",
             subtitles = "But damnnnnnnnnn, you know? She was a total babe. I couldn't keep my eyes off her!",
             o1Text = "[Q] Alright, move on for real this time.",
             o1NextState = 21,
-            incitement = "Natalie"
+            talkabout = new string[] {"Natalie"},
+            incitement = new string[] {"Natalie"}
         },
         new Sentence() {
             audiofile = "21",
@@ -190,20 +204,22 @@ public class GameController : MonoBehaviour
             subtitles = "Anyway, so flash forward to senior year. Jamie's throwing one of his ragers at his house, and boy, is it going crazy.",
             o1Text = "[Q] Reminisce.",
             o1NextState = 27,
-            talkabout = "Jamie",
+            talkabout = new string[] {"Jamie"},
         },
         new Sentence() {
             audiofile = "27",
             subtitles = "Remember Jamie's parties? I don't think Jamie does!",
             o1Text = "[Q] Check in.",
             o1NextState = 28,
+            talkabout = new string[] {"Jamie"},
         },
         new Sentence() {
             audiofile = "28",
             subtitles = "Now that I think of it, Jamie, I hope you got some professional help. I don't think you were in a good place. Really a burden to your friends and family.",
             o1Text = "[Q] Move on.",
             o1NextState = 29,
-            incitement = "Jamie"
+            talkabout = new string[] {"Jamie"},
+            incitement = new string[] {"Jamie"},
         },
         new Sentence() {
             audiofile = "29",
@@ -234,7 +250,7 @@ public class GameController : MonoBehaviour
             subtitles = "They were fucking, folks!",
             o1Text = "[Q] Move on!",
             o1NextState = 34,
-            incitement = "Jerry"
+            incitement = new string[] {"Susan"}
         },
         new Sentence() {
             audiofile = "34",
@@ -299,20 +315,22 @@ public class GameController : MonoBehaviour
             subtitles = "I mean, think of our friend Steve. First he was lying to his wife about working late when we were at the bar. Now I hear him and Jenny are separated. ",
             o1Text = "[Q] Check in.",
             o1NextState = 44,
-            talkabout = "Steve",
+            talkabout = new string[] {"Steve"},
         },
         new Sentence() {
             audiofile = "44",
             subtitles = "How’s that going for you, Steve? Don’t see Jenny here today, do I.",
             o1Text = "[Q] Comfort.",
-            o1NextState = 45
+            o1NextState = 45,
+            talkabout = new string[] {"Steve"},
         },
         new Sentence() {
             audiofile = "45",
             subtitles = "Honesty is the best policy, my dude.",
             o1Text = "[Q] Give long-term advice.",
             o1NextState = 50,
-            incitement = "Steve"
+            talkabout = new string[] {"Steve"},
+            incitement = new string[] {"Steve"},
         },
         new Sentence() {
             audiofile = "46",
@@ -325,21 +343,21 @@ public class GameController : MonoBehaviour
             subtitles = "Look at Maddie. She’s never even entertained Derek’s dreams of becoming a jazz guitarist.",
             o1Text = "[Q] Sympathize.",
             o1NextState = 48,
-            talkabout = "Maddie",
+            talkabout = new string[] {"Maddie", "Derek"},
         },
         new Sentence() {
             audiofile = "48",
             subtitles = "I mean, we’ve all had to listen to Derek perform, so we know he’s not going anywhere. He doesn’t have the talent or the vision.",
             o1Text = "[Q] Motivate.",
             o1NextState = 49,
-            incitement = "Derek"
+            talkabout = new string[] {"Maddie", "Derek"},
+            incitement = new string[] {"Maddie", "Derek"},
         },
         new Sentence() {
             audiofile = "49",
             subtitles = "But you agreed to marry the hack, and that still means something! You can’t just threaten to leave with the kids every six months.",
             o1Text = "[Q] Give long-term advice.",
             o1NextState = 50,
-            incitement = "Maddie"
         },
         new Sentence() {
             audiofile = "50",
@@ -360,14 +378,15 @@ public class GameController : MonoBehaviour
             subtitles = "Jerry, I get you were born in the silent generation, but you gotta keep your wife looped in.",
             o1Text = "[Q] Keep the audience looped in.",
             o1NextState = 53,
-            talkabout = "Susan",
+            talkabout = new string[] {"Jerry"},
         },
         new Sentence() {
             audiofile = "53",
             subtitles = "This man saw how great a daughter Natalie turned out and started a whole second family! Seems like the kind of thing you should tell Susan about, though!",
             o1Text = "[Q] Wrap up.",
             o1NextState = 57,
-            incitement = "Susan" // or Jerry
+            talkabout = new string[] {"Jerry"},
+            incitement = new string[] {"Jerry"} // or Jerry
         },
         new Sentence() {
             audiofile = "54",
@@ -380,15 +399,15 @@ public class GameController : MonoBehaviour
             subtitles = "Just look at Mike. He has to take these meds for his depression, and now Jessica says he’s never in the mood.",
             o1Text = "[Q] Inspire.",
             o1NextState = 56,
-            incitement = "Jessica",
-            talkabout = "Mike",
+            talkabout = new string[] {"Mike", "Jessica"},
         },
         new Sentence() {
             audiofile = "56",
             subtitles = "Come on Mike! Jessica wants you to show her what it was like on your honeymoon. Are you really “tired” every night?",
             o1Text = "[Q] Wrap up.",
             o1NextState = 57,
-            incitement = "Mike"
+            talkabout = new string[] {"Mike", "Jessica"},
+            incitement = new string[] {"Mike", "Jessica"}
         },
         new Sentence() {
             audiofile = "57",
@@ -428,23 +447,44 @@ public class GameController : MonoBehaviour
         public int o1NextState { get; set; }
         public string o2Text { get; set; }
         public int o2NextState { get; set; }
-        public string incitement { get; set; }
-        public string talkabout { get; set; }
+        public string[] incitement { get; set; }
+        public string[] talkabout { get; set; }
 
     }
     void Start()
     {
-        currentSentence = 25; // should be set to 0
-        nextSentence = 26; // should be set to 2
-        var enemy = GameObject.Find("Guests/Natalie");
-        enemy.GetComponent<EnemyAnimation>().Incite();
-        enemy = GameObject.Find("Guests/Greg");
-        enemy.GetComponent<EnemyAnimation>().Incite();
+        var guests = GameObject.Find("Guests");
+        foreach (Transform t in guests.transform)
+        {
+            enemyPositions.Add(t.gameObject.name, t.position);
+        }
+        var player = GameObject.Find("Player");
+        playerStart = player.transform.position;
+        InitGame();
     }
-
-    // Update is called once per frame
+    public void InitGame()
+    {
+        currentSentence = 0; // should be set to 0
+        nextSentence = 2; // should be set to 2
+        //var enemy = GameObject.Find("Guests/Natalie");
+        //enemy.GetComponent<EnemyAnimation>().Incite();
+        //enemy = GameObject.Find("Guests/Greg");
+        //enemy.GetComponent<EnemyAnimation>().Incite();
+        var o1Text = "[Q] Get 'em goin'";
+        string o2Text = null;
+        if (currentSentence != 0)
+        {
+            o1Text = sentences[currentSentence].o1Text;
+            o2Text = sentences[currentSentence].o2Text;
+        }
+        optionsText.GetComponent<Text>().text = o1Text + "\n" + o2Text;
+        MicDown();
+        // store original enemy positions
+    }
+    // Update is called an undefined number of times per frame
     void Update()
     {
+        //Debug.Log(currentSentence);
         if (gameState == 0)
         {
             if (Input.GetKeyDown(KeyCode.Q))
@@ -470,10 +510,27 @@ public class GameController : MonoBehaviour
                     }
                     options.active = false;
 
-                    subtitle.GetComponent<Text>().text = sentences[nextSentence].subtitles;
+                    sentence = sentences[nextSentence];
+                    subtitle.GetComponent<Text>().text = sentence.subtitles;
                     subtitle.active = true;
 
-                    AudioClip audioClip = Resources.Load("Speech/" + sentences[nextSentence].audiofile) as AudioClip;
+                    foreach (var x in currTalkabout)
+                    {
+                        var enemy = GameObject.Find("Guests/" + x);
+                        enemy.GetComponent<EnemyAnimation>().StopTalkingAbout();
+                    }
+                    currTalkabout = new HashSet<string>();
+                    if (sentence.talkabout != null)
+                    {
+                        for (var i = 0; i < sentence.talkabout.Length; i++)
+                        {
+                            var enemy = GameObject.Find("Guests/" + sentence.talkabout[i]);
+                            enemy.GetComponent<EnemyAnimation>().TalkAbout();
+                            currTalkabout.Add(sentence.talkabout[i]);
+                        }
+                    }
+
+                    AudioClip audioClip = Resources.Load("Speech/" + sentence.audiofile) as AudioClip;
                     playerAudio.clip = audioClip;
                     playerAudio.Play();
                     audioStarted = true;
@@ -484,6 +541,16 @@ public class GameController : MonoBehaviour
                 // we only get here after the audio's done!
             }
 
+            if (currentSentence == 57 && playerAudio.isPlaying)
+            {
+                Debug.Log(playerAudio.time);
+
+                if (playerAudio.time > visual_cutoff_end)
+                {
+                    gameState = 3;
+                }
+
+            }
             // as we go to the next state, we must set the text
             // of the options menu to the next state.
             if (!playerAudio.isPlaying && audioStarted)
@@ -500,21 +567,38 @@ public class GameController : MonoBehaviour
 
                 if (sentence.incitement != null)
                 {
-                    var enemy = GameObject.Find("Guests/" + sentence.incitement);
-                    enemy.GetComponent<EnemyAnimation>().Incite();
-                }
-                if (sentence.talkabout != null)
-                {
-                    var enemy = GameObject.Find("Guests/" + sentence.talkabout);
-                    enemy.GetComponent<EnemyAnimation>().TalkAbout();
+                    for (var i = 0; i < sentence.incitement.Length; i++)
+                    {
+                        var enemy = GameObject.Find("Guests/" + sentence.incitement[i]);
+                        enemy.GetComponent<EnemyAnimation>().Incite();
+                        currIncitement.Add(sentence.incitement[i]);
+                    }
                 }
             }
         }
-        if (gameState == 2 || gameState == 3)
+        if (gameState == 3)
         {
+            if (!playerAudio.isPlaying)
+            {
+                this.MicDown();
+                subtitle.active = false;
+            }
+            else
+            {
+                playerAudio.volume = Mathf.Lerp(1, 0, (playerAudio.time - audio_cutoff_start) / (audio_cutoff_end - audio_cutoff_start));
+            }
+        }
+        if (gameState == 2)
+        {
+            this.MicDown();
+
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                SceneManager.LoadScene("test scene");
+                RestartGame();
+            };
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                ReloadCheckpoint();
             };
         }
         // if there's no prompt, then we need to increment the
@@ -539,5 +623,49 @@ public class GameController : MonoBehaviour
 
         // we collapse the canvas.
         canvas.active = false;
+    }
+
+    public void ReloadCheckpoint()
+    {
+        ResetObjects();
+        var guests = GameObject.Find("Guests");
+        foreach (Transform t in guests.transform)
+        {
+
+            if (currTalkabout.Contains(t.gameObject.name))
+            {
+                var enemy = t.gameObject.GetComponent<EnemyAnimation>();
+                enemy.TalkAbout();
+            }
+
+            if (currIncitement.Contains(t.gameObject.name))
+            {
+                var enemy = t.gameObject.GetComponent<EnemyAnimation>();
+                enemy.Incite();
+            }
+        }
+        gameState = 1;
+
+    }
+    public void RestartGame()
+    {
+        ResetObjects();
+        InitGame();
+        gameState = 1;
+        currentSentence = 0;
+        nextSentence = 2;
+    }
+    public void ResetObjects()
+    {
+        var guests = GameObject.Find("Guests");
+        foreach (Transform t in guests.transform)
+        {
+            var enemy = t.gameObject.GetComponent<EnemyAnimation>();
+            enemy.Pacify();
+            enemy.StopTalkingAbout();
+            t.position = enemyPositions[t.gameObject.name];
+        }
+        var player = GameObject.Find("Player");
+        player.transform.position = playerStart;
     }
 }

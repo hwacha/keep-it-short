@@ -5,7 +5,6 @@ using UnityEngine.AI;
 public class EnemyAnimation : MonoBehaviour
 {
 
-    public int gameState = 0;
     public float leftBoundary = 5;
     public float rightBoundary = -5;
 
@@ -20,12 +19,15 @@ public class EnemyAnimation : MonoBehaviour
 
     public Transform wobbler;
 
+    public GameController game;
     public bool incited = false;
     private float epsilon = 0.5f;
 
     // Start is called before the first frame update
     void Start()
     {
+        game = GameObject.Find("GameController").GetComponent<GameController>();
+
         radius = 0.5f * transform.lossyScale.x;
         playerTransform = GameObject.Find("Player").transform;
         zRotationSpeed = zRotationDefaultSpeed * Random.Range(0.8f, 1.2f);
@@ -40,14 +42,14 @@ public class EnemyAnimation : MonoBehaviour
         //     zRotationVelocity *= -1;
         // }
         // wobbler.Rotate(0, 0, zRotationVelocity);
-        
+
         transform.rotation = transform.rotation *
             Quaternion.Lerp(
                 Quaternion.AngleAxis(leftBoundary, Vector3.forward),
                 Quaternion.AngleAxis(rightBoundary, Vector3.forward),
                 Mathf.PingPong(Time.time * zRotationSpeed, 1));
 
-        if (incited)
+        if (incited && game.gameState == 1)
         {
             navMeshAgent.SetDestination(playerTransform.position);
 
@@ -56,8 +58,7 @@ public class EnemyAnimation : MonoBehaviour
             if (0 < remainingDistance &&
                 remainingDistance < epsilon)
             {
-                var game = GameObject.Find("GameController");
-                game.GetComponent<GameController>().gameState = 2;
+                game.gameState = 2;
             }
         }
         else
@@ -93,10 +94,28 @@ public class EnemyAnimation : MonoBehaviour
         }
         return false;
     }
-    public void Pacify()
+    public bool StopTalkingAbout()
     {
-        // if we want a place for the enemy to go when
-        // it's "pacified", we'll want to set the destination
-        // to a neutral location.
+        if (!incited)
+        {
+            var cube = wobbler.GetChild(1);
+            var mat = cube.GetComponent<Renderer>().material;
+            mat.color = Color.white;
+            return true;
+        }
+        return false;
+    }
+    public bool Pacify()
+    {
+        if (incited)
+        {
+            var cube = wobbler.GetChild(1);
+            var mat = cube.GetComponent<Renderer>().material;
+            mat.color = Color.white;
+            incited = false;
+            navMeshAgent.ResetPath();
+            return true;
+        }
+        return false;
     }
 }

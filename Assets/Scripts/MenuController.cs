@@ -9,10 +9,12 @@ public class MenuController : MonoBehaviour
     private GameObject loseScreen;
     private GameObject startScreen;
 
+    // private Image backgroundImage;
     public GameController game;
     void Start()
     {
         background = GameObject.Find("Background");
+        // backgroundImage.
         winScreen = GameObject.Find("Win");
         loseScreen = GameObject.Find("Lose");
         startScreen = GameObject.Find("Start");
@@ -31,9 +33,18 @@ public class MenuController : MonoBehaviour
             startScreen.active = true;
 
         }
-        if (game.gameState == 1)
+        if (game.gameState == 1 && game.currentSentence == 57)
         {
-            // empty
+            var color = new Color(1, 1, 1, 0);
+            if (game.playerAudio.time > game.visual_cutoff_start)
+            {
+                color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (game.playerAudio.time - game.visual_cutoff_start) / (game.visual_cutoff_end - game.visual_cutoff_start));
+                Debug.Log(color.a);
+            }
+
+            background.GetComponent<CanvasRenderer>().SetColor(color);
+            background.active = true;
+
         }
         if (game.gameState == 2)
         {

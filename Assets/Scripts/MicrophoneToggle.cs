@@ -15,17 +15,20 @@ public class MicrophoneToggle : MonoBehaviour
 
     public PlayerMovement pm;
 
-    void Start() {
+    void Start()
+    {
         isMicrophoneUp = false;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) && controller.gameState == 1)
+        {
             isMicrophoneUp = !isMicrophoneUp;
 
             // we're switching to an up position
-            if (isMicrophoneUp) {
+            if (isMicrophoneUp)
+            {
                 transform.localPosition = new Vector3(upPosition.x, upPosition.y, upPosition.z);
                 transform.localRotation = Quaternion.Euler(upRotation);
 
@@ -33,7 +36,9 @@ public class MicrophoneToggle : MonoBehaviour
 
                 controller.MicUp();
 
-            } else {
+            }
+            else
+            {
                 // we're switching to a down position
                 transform.localPosition = new Vector3(downPosition.x, downPosition.y, downPosition.z);
                 transform.localRotation = Quaternion.Euler(downRotation);
