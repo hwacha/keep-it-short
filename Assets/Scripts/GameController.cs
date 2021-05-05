@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     public GameObject subtitle;
     public GameObject options;
     public GameObject optionsText;
+    public GameObject bar;
+    public GameObject progress;
     #endregion
 
     #region speech
@@ -460,6 +462,9 @@ public class GameController : MonoBehaviour
         }
         var player = GameObject.Find("Player");
         playerStart = player.transform.position;
+
+        GameObject.Find("Camera").GetComponent<MouseLook>().Disable();
+
         InitGame();
     }
     public void InitGame()
@@ -490,6 +495,7 @@ public class GameController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 gameState = 1;
+                GameObject.Find("Camera").GetComponent<MouseLook>().Enable();
             };
         }
         if (gameState == 1)
@@ -512,7 +518,7 @@ public class GameController : MonoBehaviour
 
                     sentence = sentences[nextSentence];
                     subtitle.GetComponent<Text>().text = sentence.subtitles;
-                    subtitle.active = true;
+                    ToggleSubtitles(true);
 
                     foreach (var x in currTalkabout)
                     {
@@ -541,6 +547,16 @@ public class GameController : MonoBehaviour
                 // we only get here after the audio's done!
             }
 
+            if (playerAudio.isPlaying) {
+                // not actually a percentage
+                float percentDone = Mathf.Lerp(0, 1, playerAudio.time / playerAudio.clip.length);
+
+                var progressRt = progress.GetComponent<RectTransform>();
+                progressRt.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, 500 * percentDone);
+                progressRt.localPosition = new Vector3(250 * (-1 + percentDone),
+                    progressRt.localPosition.y, progressRt.localPosition.z);
+            }
+
             if (currentSentence == 57 && playerAudio.isPlaying)
             {
                 Debug.Log(playerAudio.time);
@@ -557,7 +573,8 @@ public class GameController : MonoBehaviour
             {
                 audioStarted = false;
 
-                subtitle.active = false;
+                ToggleSubtitles(false);
+
                 currentSentence = nextSentence;
                 sentence = sentences[nextSentence];
 
@@ -581,7 +598,7 @@ public class GameController : MonoBehaviour
             if (!playerAudio.isPlaying)
             {
                 this.MicDown();
-                subtitle.active = false;
+                ToggleSubtitles(false);
             }
             else
             {
@@ -618,7 +635,7 @@ public class GameController : MonoBehaviour
         audioStarted = false;
 
         // we go back to the options menu.
-        subtitle.active = false;
+        ToggleSubtitles(false);
         options.active = true;
 
         // we collapse the canvas.
@@ -647,6 +664,13 @@ public class GameController : MonoBehaviour
         gameState = 1;
 
     }
+
+    void ToggleSubtitles(bool active) {
+        subtitle.active = active;
+        bar.active = active;
+        progress.active = active;
+    }
+
     public void RestartGame()
     {
         ResetObjects();

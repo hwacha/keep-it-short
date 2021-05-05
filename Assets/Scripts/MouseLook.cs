@@ -13,7 +13,7 @@ public class MouseLook : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        enable();
+        // enable();
     }
 
     // Update is called once per frame
@@ -31,13 +31,13 @@ public class MouseLook : MonoBehaviour
         playerBody.Rotate(Vector3.up * mouseX);
     }
 
-    public void disable() {
+    public void Disable() {
         disabled = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
 
-    public void enable() {
+    public void Enable() {
         disabled = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
