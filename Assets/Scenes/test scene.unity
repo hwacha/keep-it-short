@@ -523,7 +523,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1
@@ -635,7 +635,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -1091,7 +1091,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1
@@ -1780,7 +1780,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 1
@@ -2020,7 +2020,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 34
     m_FontStyle: 0
     m_BestFit: 1
@@ -2858,7 +2858,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1
@@ -2870,8 +2870,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Hey man I love you, but you''ve had a few drinks and I don''t want you
-    to start a scene so can you please keep it short? '
+  m_Text: 'Hey man, it''s time for your speech. I love you, but you''ve had a few
+    drinks and I don''t want you to start a scene, so can you try to keep it short? '
 --- !u!222 &1199052522
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3038,7 +3038,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1
@@ -3050,7 +3050,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: you did it my dude
+  m_Text: Congratulations! You managed to give a moralizing, historically inaccurate
+    screed about Western culture for the next 70 minutes, sealing this wedding as
+    one to remember.
 --- !u!222 &1310297364
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3117,7 +3119,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1
@@ -4965,7 +4967,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bcff07147b0e344558cfebb25e0f66d6, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 1

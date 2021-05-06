@@ -465,6 +465,8 @@ public class GameController : MonoBehaviour
 
         GameObject.Find("Camera").GetComponent<MouseLook>().Disable();
 
+
+
         InitGame();
     }
     public void InitGame()
@@ -492,6 +494,14 @@ public class GameController : MonoBehaviour
         //Debug.Log(currentSentence);
         if (gameState == 0)
         {
+            if (playerAudio.clip == null) {
+                // we load and play the wedding music.
+                AudioClip audioClip = Resources.Load("wedding-march-short") as AudioClip;
+                playerAudio.clip = audioClip;
+
+                playerAudio.Play();    
+            }
+
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 gameState = 1;
