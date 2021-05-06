@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     #region speech
     public string playerText;
     public AudioSource playerAudio;
+    public AudioSource environmentalAudio;
 
     public float visual_cutoff_start = 5f;
     public float visual_cutoff_end = 10f;
@@ -33,6 +34,8 @@ public class GameController : MonoBehaviour
     private HashSet<string> currIncitement = new HashSet<string>();
     private Dictionary<string, Vector3> enemyPositions = new Dictionary<string, Vector3>();
     private Vector3 playerStart;
+
+    private bool lockClap = false;
     private Sentence[] sentences = new Sentence[]{
         new Sentence() {
             // 0
@@ -51,7 +54,7 @@ public class GameController : MonoBehaviour
             o1Text = "[Q] Keep it going.",
             o1NextState = 3,
             talkabout = new string[] {"Greg"},
-            incitement = new string[] {"Greg"},
+            
         },
         new Sentence() {
             audiofile = "3",
@@ -78,6 +81,7 @@ public class GameController : MonoBehaviour
             subtitles = "For real, though, I've known both of them a long time, and it's been wonderful to see them grow together as a couple.",
             o1Text = "[Q] Reminisce.",
             o1NextState = 7,
+            talkabout = new string[] {"Greg", "Natalie"},
         },
         new Sentence() {
             audiofile = "7",
@@ -86,48 +90,56 @@ public class GameController : MonoBehaviour
             o1NextState = 8,
             o2Text = "[E] Talk about his social skills.",
             o2NextState = 12,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "8",
             subtitles = "I mean this guy was a slob! The man didn’t know how to throw anything away. You could see where his side of the room started because from the wall of tissues and leftover food.",
             o1Text = "[Q] Elaborate.",
-            o1NextState = 9
+            o1NextState = 9,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "9",
             subtitles = "I mean, hell, I don't think he discovered deodorant until sophomore year!",
             o1Text = "[Q] Walk it back.",
             o1NextState = 10,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "10",
             subtitles = "I mean, Greg, you do clean yourself up pretty well.",
             o1Text = "[Q] Unwalk it a little.",
             o1NextState = 11,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "11",
             subtitles = "But man, I wish you got clean a little more often!",
             o1Text = "[Q] Share some love.",
             o1NextState = 15,
+            incitement = new string[] {"Greg"}
         },
         new Sentence() {
             audiofile = "12",
             subtitles = "You were a pretty awkward guy. For the first few weeks, you wouldn't make eye contact at all!",
             o1Text = "[Q] Now that I think of it...",
             o1NextState = 13,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "13",
             subtitles = "He still hasn't figured out how to talk to people, has he? Always interjecting with some book he read. Kinda ruins the flow of conversation when you butt in like that, Greg!",
             o1Text = "[Q] Pun it up.",
             o1NextState = 14,
+            talkabout = new string[] {"Greg"},
         },
         new Sentence() {
             audiofile = "14",
             subtitles = "We get it! You read a lot of books. Have you ever tried reading the room?",
             o1Text = "[Q] Share some love.",
-            o1NextState = 15
+            o1NextState = 15,
+            incitement = new string[] {"Greg"}
         },
         new Sentence() {
             audiofile = "15",
@@ -465,8 +477,6 @@ public class GameController : MonoBehaviour
 
         GameObject.Find("Camera").GetComponent<MouseLook>().Disable();
 
-
-
         InitGame();
     }
     public void InitGame()
@@ -494,12 +504,11 @@ public class GameController : MonoBehaviour
         //Debug.Log(currentSentence);
         if (gameState == 0)
         {
-            if (playerAudio.clip == null) {
+            if (environmentalAudio.clip == null) {
                 // we load and play the wedding music.
                 AudioClip audioClip = Resources.Load("wedding-march-short") as AudioClip;
-                playerAudio.clip = audioClip;
-
-                playerAudio.Play();    
+                environmentalAudio.clip = audioClip;
+                environmentalAudio.Play();
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -511,11 +520,10 @@ public class GameController : MonoBehaviour
         if (gameState == 1)
         {
             // play crowd ambience before you start speaking
-            if (playerAudio.clip.name.Equals("wedding-march-short") && !playerAudio.isPlaying) {
+            if (playerAudio.clip == null && !environmentalAudio.isPlaying) {
                 AudioClip audioClip = Resources.Load("crowd-ambience") as AudioClip;
-                playerAudio.clip = audioClip;
-
-                playerAudio.Play();
+                environmentalAudio.clip = audioClip;
+                environmentalAudio.Play();
             }
 
             var sentence = sentences[currentSentence];
@@ -549,6 +557,16 @@ public class GameController : MonoBehaviour
                         for (var i = 0; i < sentence.talkabout.Length; i++)
                         {
                             var enemy = GameObject.Find("Guests/" + sentence.talkabout[i]);
+
+                            if (i == 0) {
+                                environmentalAudio.transform.position =
+                                    new Vector3(enemy.transform.position.x,
+                                        enemy.transform.position.y,
+                                        enemy.transform.position.z);
+                                environmentalAudio.clip = Resources.Load("what") as AudioClip;
+                                environmentalAudio.Play();
+                            }
+
                             enemy.GetComponent<EnemyAnimation>().TalkAbout();
                             currTalkabout.Add(sentence.talkabout[i]);
                         }
@@ -568,6 +586,12 @@ public class GameController : MonoBehaviour
             if (playerAudio.isPlaying) {
                 // not actually a percentage
                 float percentDone = Mathf.Lerp(0, 1, playerAudio.time / playerAudio.clip.length);
+
+                if (currentSentence == 0 && canvas.active && percentDone >= 0.7f && !lockClap) {
+                    environmentalAudio.clip = Resources.Load("clapping") as AudioClip;
+                    environmentalAudio.Play();
+                    lockClap = true;
+                }
 
                 var progressRt = progress.GetComponent<RectTransform>();
                 progressRt.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, 500 * percentDone);
@@ -602,9 +626,16 @@ public class GameController : MonoBehaviour
 
                 if (sentence.incitement != null)
                 {
+
                     for (var i = 0; i < sentence.incitement.Length; i++)
                     {
                         var enemy = GameObject.Find("Guests/" + sentence.incitement[i]);
+                        if (i == 0) {
+                            environmentalAudio.transform.position =
+                                new Vector3(enemy.transform.position.x, enemy.transform.position.y, enemy.transform.position.z);
+                            environmentalAudio.clip = Resources.Load("angry-male") as AudioClip;
+                            environmentalAudio.Play();
+                        }
                         enemy.GetComponent<EnemyAnimation>().Incite();
                         currIncitement.Add(sentence.incitement[i]);
                     }
