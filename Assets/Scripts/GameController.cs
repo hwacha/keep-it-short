@@ -510,6 +510,14 @@ public class GameController : MonoBehaviour
         }
         if (gameState == 1)
         {
+            // play crowd ambience before you start speaking
+            if (playerAudio.clip.name.Equals("wedding-march-short") && !playerAudio.isPlaying) {
+                AudioClip audioClip = Resources.Load("crowd-ambience") as AudioClip;
+                playerAudio.clip = audioClip;
+
+                playerAudio.Play();
+            }
+
             var sentence = sentences[currentSentence];
             if (canvas.active && !audioStarted)
             {
