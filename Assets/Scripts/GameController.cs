@@ -446,9 +446,9 @@ public class GameController : MonoBehaviour
         public string audiofile { get; set; }
         public string subtitles { get; set; }
         public string o1Text { get; set; }
-        public int o1NextState { get; set; }
+        public int o1NextState { get; set; } = -1;
         public string o2Text { get; set; }
-        public int o2NextState { get; set; }
+        public int o2NextState { get; set; } = -1;
         public string[] incitement { get; set; }
         public string[] talkabout { get; set; }
 
