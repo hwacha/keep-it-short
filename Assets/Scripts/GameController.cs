@@ -559,6 +559,7 @@ public class GameController : MonoBehaviour
                             var enemy = GameObject.Find("Guests/" + sentence.talkabout[i]);
 
                             if (i == 0) {
+                                environmentalAudio.transform.SetParent(null);
                                 environmentalAudio.transform.position =
                                     new Vector3(enemy.transform.position.x,
                                         enemy.transform.position.y,
@@ -633,8 +634,10 @@ public class GameController : MonoBehaviour
                         if (i == 0) {
                             environmentalAudio.transform.position =
                                 new Vector3(enemy.transform.position.x, enemy.transform.position.y, enemy.transform.position.z);
+                            environmentalAudio.transform.SetParent(enemy.transform);
                             environmentalAudio.clip = Resources.Load("angry-male") as AudioClip;
                             environmentalAudio.Play();
+
                         }
                         enemy.GetComponent<EnemyAnimation>().Incite();
                         currIncitement.Add(sentence.incitement[i]);
