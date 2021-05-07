@@ -1228,7 +1228,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3289,7 +3289,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'You finally get to the heart of your speech: a lengthy, moralizing screed
-    about decline of Western culture. You detail your incoherent and historically
+    about the decline of Western culture. You detail your incoherent and historically
     inaccurate theories for over two hours. Nobody can stop you. You are the best
     man! This is your speech! Greg knew what he was getting... and this is too important
     an issue to let go...'
@@ -3878,8 +3878,8 @@ GameObject:
   - component: {fileID: 1541335120}
   - component: {fileID: 1541335122}
   - component: {fileID: 1541335121}
-  m_Layer: 5
-  m_Name: WinText
+  m_Layer: 0
+  m_Name: MessageBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3937,7 +3937,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: They took the mic from you. What the hell! You were just getting going!
+  m_Text: They took the mic from you. What the hell! You were just getting started!
     You had so much more to say...
 --- !u!222 &1541335122
 CanvasRenderer:
