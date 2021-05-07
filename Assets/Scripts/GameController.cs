@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     private HashSet<string> currIncitement = new HashSet<string>();
     private Dictionary<string, Vector3> enemyPositions = new Dictionary<string, Vector3>();
     private Vector3 playerStart;
+    private MicrophoneToggle microphone;
 
     private bool lockClap = false;
     private Sentence[] sentences = new Sentence[]{
@@ -97,6 +98,7 @@ public class GameController : MonoBehaviour
             subtitles = "I mean this guy was a slob! The man didn’t know how to throw anything away. You could see where his side of the room started because from the wall of tissues and leftover food.",
             o1Text = "[Q] Elaborate.",
             o1NextState = 9,
+            talkabout = new string[] {"Greg"},
             incitement = new string[] {"Greg"}
         },
         new Sentence() {
@@ -129,6 +131,7 @@ public class GameController : MonoBehaviour
             subtitles = "He still hasn't figured out how to talk to people, has he? Always interjecting with some book he read. Kinda ruins the flow of conversation when you butt in like that, Greg!",
             o1Text = "[Q] Pun it up.",
             o1NextState = 14,
+            talkabout = new string[] {"Greg"},
             incitement = new string[] {"Greg"}
         },
         new Sentence() {
@@ -155,25 +158,29 @@ public class GameController : MonoBehaviour
             subtitles = "Man, back then, Nat was beautiful. I mean, she's pretty enough now, but God, back then, she was a smokeshow.",
             o1Text = "[Q] Reminisce.",
             o1NextState = 18,
-            incitement = new string[] {"Natalie"}
+            talkabout = new string[] {"Natalie"}
         },
         new Sentence() {
             audiofile = "18",
             subtitles = "I sat behind her in organic chemistry, and I'd spend the whole time just staring at her, thinking all sorts of thoughts, if you know what I mean.",
             o1Text = "[Q] Move on.",
             o1NextState = 19,
+            talkabout = new string[] {"Natalie"}
         },
         new Sentence() {
             audiofile = "19",
             subtitles = "I mean, I don't want to dwell on it...",
             o1Text = "[Q] Maybe dwell on it a little, actually.",
             o1NextState = 20,
+            talkabout = new string[] {"Natalie"}
         },
         new Sentence() {
             audiofile = "20",
             subtitles = "But damnnnnnnnnn, you know? She was a total babe. I couldn't keep my eyes off her!",
             o1Text = "[Q] Alright, move on for real this time.",
-            o1NextState = 22, // skipping 21 to speed things up
+            o1NextState = 21,
+            talkabout = new string[] {"Natalie"},
+            incitement = new string[] {"Natalie"}
         },
         new Sentence() {
             audiofile = "21",
@@ -299,10 +306,8 @@ public class GameController : MonoBehaviour
         new Sentence() {
             audiofile = "40",
             subtitles = "Because God knows, we’ve seen the dysfunctional messes our friends get themselves into.",
-            o1Text = "They should...\n[Q] Be honest.",
-            o1NextState = 42,
-            o2Text = "[E] Be supportive.",
-            o2NextState = 46
+            o1Text = "[Q] Give more advice.",
+            o1NextState = 41,
         },
         new Sentence() {
             audiofile = "41",
@@ -394,7 +399,7 @@ public class GameController : MonoBehaviour
             o1Text = "[Q] Wrap up.",
             o1NextState = 57,
             talkabout = new string[] {"Jerry"},
-            incitement = new string[] {"Jerry"} // or Jerry
+            incitement = new string[] {"Jerry"}
         },
         new Sentence() {
             audiofile = "54",
@@ -467,16 +472,16 @@ public class GameController : MonoBehaviour
             enemyPositions.Add(t.gameObject.name, t.position);
         }
         var player = GameObject.Find("Player");
-        playerStart = player.transform.position;
+        playerStart = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
         GameObject.Find("Camera").GetComponent<MouseLook>().Disable();
-
+        microphone = GameObject.Find("Player/Camera/Microphone").GetComponent<MicrophoneToggle>();
         InitGame();
     }
     public void InitGame()
     {
-        currentSentence = 39; // should be set to 0
-        nextSentence = 40; // should be set to 2
+        currentSentence = 0; // should be set to 0
+        nextSentence = 2; // should be set to 2
         //var enemy = GameObject.Find("Guests/Natalie");
         //enemy.GetComponent<EnemyAnimation>().Incite();
         //enemy = GameObject.Find("Guests/Greg");
@@ -489,7 +494,7 @@ public class GameController : MonoBehaviour
             o2Text = sentences[currentSentence].o2Text;
         }
         optionsText.GetComponent<Text>().text = o1Text + "\n" + o2Text;
-        MicDown();
+        microphone.toggleMic(false);
         // store original enemy positions
     }
     // Update is called an undefined number of times per frame
@@ -553,7 +558,7 @@ public class GameController : MonoBehaviour
                         for (var i = 0; i < sentence.talkabout.Length; i++)
                         {
                             var enemy = GameObject.Find("Guests/" + sentence.talkabout[i]);
-
+                            /*
                             if (i == 0)
                             {
                                 environmentalAudio.transform.SetParent(null);
@@ -563,7 +568,7 @@ public class GameController : MonoBehaviour
                                         enemy.transform.position.z);
                                 environmentalAudio.clip = Resources.Load("what") as AudioClip;
                                 environmentalAudio.Play();
-                            }
+                            }*/
 
                             enemy.GetComponent<EnemyAnimation>().TalkAbout();
                             currTalkabout.Add(sentence.talkabout[i]);
@@ -616,7 +621,6 @@ public class GameController : MonoBehaviour
                 audioStarted = false;
 
                 ToggleSubtitles(false);
-
                 currentSentence = nextSentence;
                 sentence = sentences[nextSentence];
 
@@ -632,10 +636,11 @@ public class GameController : MonoBehaviour
                         var enemy = GameObject.Find("Guests/" + sentence.incitement[i]);
                         if (i == 0)
                         {
+                            environmentalAudio.spatialBlend = 1;
                             environmentalAudio.transform.position =
                                 new Vector3(enemy.transform.position.x, enemy.transform.position.y, enemy.transform.position.z);
                             environmentalAudio.transform.SetParent(enemy.transform);
-                            environmentalAudio.clip = Resources.Load("angry-male") as AudioClip;
+                            environmentalAudio.clip = Resources.Load("bell") as AudioClip;
                             environmentalAudio.Play();
 
                         }
@@ -643,13 +648,15 @@ public class GameController : MonoBehaviour
                         currIncitement.Add(sentence.incitement[i]);
                     }
                 }
+                this.MicDown();
+                microphone.toggleMic(false);
             }
         }
         if (gameState == 3)
         {
             if (!playerAudio.isPlaying)
             {
-                this.MicDown();
+                microphone.toggleMic(false);
                 ToggleSubtitles(false);
             }
             else
@@ -659,7 +666,7 @@ public class GameController : MonoBehaviour
         }
         if (gameState == 2)
         {
-            this.MicDown();
+            microphone.toggleMic(false);
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -743,6 +750,9 @@ public class GameController : MonoBehaviour
             t.position = enemyPositions[t.gameObject.name];
         }
         var player = GameObject.Find("Player");
-        player.transform.position = playerStart;
+        var player_controller = player.GetComponent<CharacterController>();
+        player_controller.enabled = false;
+        player.transform.position = new Vector3(playerStart.x, playerStart.y, playerStart.z);
+        player_controller.enabled = true;
     }
 }

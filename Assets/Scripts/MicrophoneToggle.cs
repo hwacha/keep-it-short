@@ -22,31 +22,34 @@ public class MicrophoneToggle : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && controller.gameState == 1)
+        if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space)) && controller.gameState == 1)
         {
-            isMicrophoneUp = !isMicrophoneUp;
+            toggleMic(!isMicrophoneUp);
+        }
+    }
 
-            // we're switching to an up position
-            if (isMicrophoneUp)
-            {
-                transform.localPosition = new Vector3(upPosition.x, upPosition.y, upPosition.z);
-                transform.localRotation = Quaternion.Euler(upRotation);
+    public void toggleMic(bool raiseUp)
+    {
+        isMicrophoneUp = raiseUp;
+        if (isMicrophoneUp)
+        {
+            transform.localPosition = new Vector3(upPosition.x, upPosition.y, upPosition.z);
+            transform.localRotation = Quaternion.Euler(upRotation);
 
-                pm.speed = pm.micUpSpeed;
+            pm.speed = pm.micUpSpeed;
 
-                controller.MicUp();
+            controller.MicUp();
 
-            }
-            else
-            {
-                // we're switching to a down position
-                transform.localPosition = new Vector3(downPosition.x, downPosition.y, downPosition.z);
-                transform.localRotation = Quaternion.Euler(downRotation);
+        }
+        else
+        {
+            // we're switching to a down position
+            transform.localPosition = new Vector3(downPosition.x, downPosition.y, downPosition.z);
+            transform.localRotation = Quaternion.Euler(downRotation);
 
-                pm.speed = pm.micDownSpeed;
+            pm.speed = pm.micDownSpeed;
 
-                controller.MicDown();
-            }
+            controller.MicDown();
         }
     }
 }
