@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 50f;
     public Transform playerBody;
     public Transform microphone;
     bool disabled = true;
@@ -12,13 +12,16 @@ public class MouseLook : MonoBehaviour
     float xRotation = 0f;
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         // enable();
     }
 
     // Update is called once per frame
-    void Update() {
-        if (disabled) {
+    void Update()
+    {
+        if (disabled)
+        {
             return;
         }
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -31,13 +34,15 @@ public class MouseLook : MonoBehaviour
         playerBody.Rotate(Vector3.up * mouseX);
     }
 
-    public void Disable() {
+    public void Disable()
+    {
         disabled = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
 
-    public void Enable() {
+    public void Enable()
+    {
         disabled = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
