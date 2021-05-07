@@ -606,8 +606,6 @@ public class GameController : MonoBehaviour
 
             if (currentSentence == 57 && playerAudio.isPlaying)
             {
-                Debug.Log(playerAudio.time);
-
                 if (playerAudio.time > visual_cutoff_end)
                 {
                     gameState = 3;

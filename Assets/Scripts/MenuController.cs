@@ -38,8 +38,9 @@ public class MenuController : MonoBehaviour
             var color = new Color(1, 1, 1, 0);
             if (game.playerAudio.time > game.visual_cutoff_start)
             {
-                color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (game.playerAudio.time - game.visual_cutoff_start) / (game.visual_cutoff_end - game.visual_cutoff_start));
-                Debug.Log(color.a);
+                color = Color.Lerp(new Color(1, 1, 1, 0), Color.white,
+                    (game.playerAudio.time - game.visual_cutoff_start) /
+                    (game.visual_cutoff_end - game.visual_cutoff_start));
             }
 
             background.GetComponent<CanvasRenderer>().SetColor(color);

@@ -300,8 +300,8 @@ MonoBehaviour:
   environmentalAudio: {fileID: 500357618}
   visual_cutoff_start: 5
   visual_cutoff_end: 10
-  audio_cutoff_start: 10
-  audio_cutoff_end: 12
+  audio_cutoff_start: 12
+  audio_cutoff_end: 14
   currentSentence: 0
   gameState: 0
 --- !u!4 &198203095
@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 245219295}
   - component: {fileID: 245219297}
   - component: {fileID: 245219296}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: StartText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -628,7 +628,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277407258}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1681974846}
@@ -998,7 +998,7 @@ GameObject:
   - component: {fileID: 492619272}
   - component: {fileID: 492619274}
   - component: {fileID: 492619273}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 497257811}
   - component: {fileID: 497257813}
   - component: {fileID: 497257812}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RestartText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1625,7 +1625,7 @@ GameObject:
   - component: {fileID: 694800259}
   - component: {fileID: 694800261}
   - component: {fileID: 694800260}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ContinueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1934,7 +1934,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 744591402}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Lose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2210,7 +2210,7 @@ GameObject:
   - component: {fileID: 870981717}
   - component: {fileID: 870981719}
   - component: {fileID: 870981718}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2902,7 +2902,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1008838936}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Win
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3048,7 +3048,7 @@ GameObject:
   - component: {fileID: 1199052520}
   - component: {fileID: 1199052522}
   - component: {fileID: 1199052521}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: StoryText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3229,7 +3229,7 @@ GameObject:
   - component: {fileID: 1310297362}
   - component: {fileID: 1310297364}
   - component: {fileID: 1310297363}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WinText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3312,7 +3312,7 @@ GameObject:
   - component: {fileID: 1320546889}
   - component: {fileID: 1320546891}
   - component: {fileID: 1320546890}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GameOverText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3878,7 +3878,7 @@ GameObject:
   - component: {fileID: 1541335120}
   - component: {fileID: 1541335122}
   - component: {fileID: 1541335121}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WinText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3956,7 +3956,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1571565113}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5126,7 +5126,7 @@ GameObject:
   - component: {fileID: 2026111243}
   - component: {fileID: 2026111242}
   - component: {fileID: 2026111246}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MenuScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5191,7 +5191,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &2026111245
 RectTransform:
@@ -5240,7 +5240,7 @@ GameObject:
   - component: {fileID: 2068046182}
   - component: {fileID: 2068046184}
   - component: {fileID: 2068046183}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Victory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
