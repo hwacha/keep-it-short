@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour
             audiofile = "11",
             subtitles = "But man, I wish you got clean a little more often!",
             o1Text = "[Q] Share some love.",
-            o1NextState = 16, // skipping 15 to speed things up
+            o1NextState = 15,
         },
         new Sentence() {
             audiofile = "12",
@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
             audiofile = "14",
             subtitles = "We get it! You read a lot of books. Have you ever tried reading the room?",
             o1Text = "[Q] Share some love.",
-            o1NextState = 16, // skipping 15 to speed things up
+            o1NextState = 15,
         },
         new Sentence() {
             audiofile = "15",
